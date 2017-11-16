@@ -104,7 +104,8 @@ class TransactionsViewController: UITableViewController {
             sum += Double(item.balance)
         }
         
-        totalAmountLabel.text = "Total Amount: \(sum)"
+//        totalAmountLabel.text = "Total Amount: \(sum)"
+        totalAmountLabel.text = String(sum)
         
         return budgets.count
         
@@ -166,7 +167,11 @@ class TransactionsViewController: UITableViewController {
             let budget = budgets[indexPath.row]
             viewController.budget = budget
             viewController.indexPath = indexPath
+        } else if segue.identifier == "converter" {
+            let destVC = segue.destination as! CurrencyConverterViewController
+            destVC.totalAmountDisplay = totalAmountLabel.text!
         }
+        
     }
    
     
