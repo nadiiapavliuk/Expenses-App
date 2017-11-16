@@ -10,7 +10,7 @@ import UIKit
 import CoreData
 
 class TransactionsViewController: UITableViewController {
-    
+    var sharedDelegate: AppDelegate!
     
     @IBOutlet weak var totalAmountLabel: UILabel!
     var budgets: [Budget] = []
@@ -19,6 +19,7 @@ class TransactionsViewController: UITableViewController {
         super.viewDidLoad()
         fetch()
         tableView.reloadData()
+        
     }
     
     override func didReceiveMemoryWarning() {
@@ -39,7 +40,7 @@ class TransactionsViewController: UITableViewController {
         }
     }
     
-    func save(categoryName: String, descriptionName: String, balance: Double) {
+    func save(categoryName: String, descriptionName: String, balance: Double, dateString: String) {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
         let managedObjectContext = appDelegate.persistentContainer.viewContext
         guard let entity = NSEntityDescription.entity(forEntityName:"Budget", in: managedObjectContext) else { return }
@@ -47,6 +48,8 @@ class TransactionsViewController: UITableViewController {
         budget.setValue(categoryName, forKey: "categoryName")
         budget.setValue(descriptionName, forKey: "descriptionName")
         budget.setValue(Double(balance), forKey: "balance")
+        budget.setValue(dateString, forKey: "dateString")
+
         
         do {
             try managedObjectContext.save()
@@ -56,13 +59,15 @@ class TransactionsViewController: UITableViewController {
         }
     }
     
-    func update(indexPath: IndexPath,categoryName: String, descriptionName:String, balance: Double) {
+    func update(indexPath: IndexPath,categoryName: String, descriptionName:String, balance: Double, dateString: String) {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
         let managedObjectContext = appDelegate.persistentContainer.viewContext
         let budget = budgets[indexPath.row]
         budget.setValue(categoryName, forKey: "categoryName")
         budget.setValue(descriptionName, forKey:"descriptionName")
         budget.setValue(Double(balance), forKey: "balance")
+        budget.setValue(dateString, forKey: "dateString")
+        //budget.setValue(dateCreated, forKey: "dateCreated")
         
         do {
             try managedObjectContext.save()
@@ -102,37 +107,43 @@ class TransactionsViewController: UITableViewController {
         totalAmountLabel.text = "Total Amount: \(sum)"
         
         return budgets.count
+        
     }
+    
+   
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "BudgetCell", for: indexPath)
         
         let budget = budgets[indexPath.row]
-        
-        cell.textLabel?.text = "\(budget.categoryName!): \(budget.descriptionName!)"
+        cell.textLabel?.text = budget.categoryName! + "\n" + String(describing: budget.dateString!) + "\n" + budget.descriptionName! 
+
         cell.detailTextLabel?.text = " $ \(String(budget.balance))"
         
-        //        cell.detailTextLabel?.text = budget.descriptionName
+    
         return cell
     }
     
+   
+
     
     @IBAction func unwindToBudgetList(segue: UIStoryboardSegue) {
         if let viewController = segue.source as? AddTransactionViewController {
             guard
                 let categoryName: String = viewController.categoryTextField.text,
-                let descriptionName: String = viewController.descriptionNameTextField.text,
+//                let descriptionName: String = viewController.descriptionNameTextField.text,
+                 let descriptionName: String = viewController.descriptionTextField.text,
                 let balanceString = viewController.balanceTextField.text,
+                let balance = Double(balanceString),
                 
-                let balance = Double(balanceString)
-                
-                
+                let dateString = viewController.dateTextField.text
+            
                 else { return }
             if descriptionName != "" && categoryName != ""  {
                 if let indexPath = viewController.indexPathForBudget {
-                    update(indexPath: indexPath, categoryName: categoryName, descriptionName: descriptionName, balance: balance)
+                    update(indexPath: indexPath, categoryName: categoryName, descriptionName: descriptionName, balance: balance, dateString: dateString)
                 } else {
-                    save(categoryName: categoryName, descriptionName: descriptionName, balance: balance)
+                    save(categoryName: categoryName, descriptionName: descriptionName, balance: balance, dateString: dateString )
                 }
             }
             tableView.reloadData()
@@ -157,7 +168,7 @@ class TransactionsViewController: UITableViewController {
             viewController.indexPath = indexPath
         }
     }
-    
+   
     
     
 }

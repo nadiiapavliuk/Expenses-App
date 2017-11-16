@@ -28,19 +28,19 @@
 //    static var currentIndex = 0
 //
 //    // This function fetches from CoreData
-////    class func getData()
-////    {
-////        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-////
-////        do
-////        {
-////            budgetArray = try context.fetch(Budget.fetchRequest())
-////        }
-////        catch
-////        {
-////            print("Fetching Failed")
-////        }
-////    }
+//    class func getData()
+//    {
+//        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+//
+//        do
+//        {
+//            budgets = try context.fetch(Budget.fetchRequest())
+//        }
+//        catch
+//        {
+//            print("Fetching Failed")
+//        }
+//    }
 //
 //    // Converts a Double like 80.0 and adds a $ sign to the front and rounds number to 2 decimal places
 //    // Returns "$80.00" in this example
@@ -383,25 +383,25 @@
 //        {
 //            for i in 0...BudgetVariables.budgets.count - 1
 //            {
-//                nameToNetAmountMap[BudgetVariables.budgets[i].name!] = BudgetVariables.budgets[i].totalAmountSpent
+//                nameToNetAmountMap[BudgetVariables.budgets[i].categoryName!] = BudgetVariables.budgets[i].totalAmountSpent
 //            }
 //        }
 //        return nameToNetAmountMap
 //    }
 //
 //    // Return a map that maps the budget name to its corresponding number of total transactions
-//    class func nameToTransactionCount() -> [String:Double]
-//    {
-//        var nameToTransactionCountMap = [String:Double]()
-//        if BudgetVariables.budgets.isEmpty == false
-//        {
-//            for i in 0...BudgetVariables.budgets.count - 1
-//            {
-//                nameToTransactionCountMap[BudgetVariables.budgets[i].name!] = Double(BudgetVariables.budgets[i].historyArray.count)
-//            }
-//        }
-//        return nameToTransactionCountMap
-//    }
+////    class func nameToTransactionCount() -> [String:Double]
+////    {
+////        var nameToTransactionCountMap = [String:Double]()
+////        if BudgetVariables.budgets.isEmpty == false
+////        {
+////            for i in 0...BudgetVariables.budgets.count - 1
+////            {
+////                nameToTransactionCountMap[BudgetVariables.budgets[i].categoryName!] = Double(BudgetVariables.budgets[i].historyArray.count)
+////            }
+////        }
+////        return nameToTransactionCountMap
+////    }
 //
 //    // This takes a hex color (IE: #ffffff) and returns a UIColor
 //    class func hexStringToUIColor(hex:String) -> UIColor
@@ -534,6 +534,7 @@
 //        return blankSpace + dateText
 //    }
 //}
+//
 //
 //
 //

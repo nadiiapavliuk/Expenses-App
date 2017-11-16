@@ -13,12 +13,13 @@ class DetailTransactionsViewController: UIViewController {
     var budget: Budget? = nil
     var isDeleted: Bool = false
     var indexPath: IndexPath? = nil
-    
+   
     override func viewDidLoad() {
         super.viewDidLoad()
         categoryNameLabel.text = budget?.categoryName
         descriptionNameLabel.text = budget?.descriptionName
         balanceLabel.text = String(describing: budget!.balance)
+        dateLabelDescription.text = String(describing: budget!.dateString!)
     }
     
     override func didReceiveMemoryWarning() {
@@ -28,6 +29,7 @@ class DetailTransactionsViewController: UIViewController {
     
     
     
+    @IBOutlet weak var dateLabelDescription: UILabel!
     @IBOutlet weak var categoryNameLabel: UILabel!
     @IBOutlet weak var descriptionNameLabel: UILabel!
     @IBOutlet weak var balanceLabel: UILabel!
